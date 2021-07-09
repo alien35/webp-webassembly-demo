@@ -23,7 +23,6 @@
       "react-app/jest"
     ],
     "ignorePatterns": [
-      "src/add.mjs",
       "src/webp.mjs"
     ]
   },
