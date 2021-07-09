@@ -7,6 +7,6 @@ webp.mjs: webp.c
 	  -s SINGLE_FILE=1  \
 	  -s EXPORT_NAME='createModule'  \
 	  -s USE_ES6_IMPORT_META=0  \
-	  -s EXPORTED_FUNCTIONS='["_version", "_malloc", "_free"]'  \
+	  -s EXPORTED_FUNCTIONS='["_version", "_create_buffer", "_destroy_buffer", "_encode", "_free_result", "_get_result_pointer", "_get_result_size", "_malloc", "_free"]'  \
 	  -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]'  \
 		-O3
