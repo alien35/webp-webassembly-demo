@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import createModule from "./webp.mjs";
 
 function App() {
 
   const [assemblyApi, setAssemblyApi] = useState();
+
+  const imgRef = useRef();
 
   const loadImage = async (src) => {
     // Load image
@@ -17,10 +19,6 @@ function App() {
     const ctx = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
     return ctx.getImageData(0, 0, img.width, img.height);
-  }
-
-  const configureImage = async () => {
-    const image = await loadImage(process.env.PUBLIC_URL + '/logo512.png');
   }
 
   useEffect(
@@ -43,15 +41,12 @@ function App() {
       const resultPointer = api.get_result_pointer();
       const resultSize = api.get_result_size();
       const resultView = new Uint8Array(Module.HEAP8.buffer, resultPointer, resultSize);
-      const result = new Uint8Array(resultView);
       api.free_result(resultPointer);
       api.destroy_buffer(p);
 
-      const blob = new Blob([result], {type: 'image/webp'});
+      const blob = new Blob([resultView], {type: 'image/webp'});
       const blobURL = URL.createObjectURL(blob);
-      const img = document.createElement('img');
-      img.src = blobURL;
-      document.body.appendChild(img)
+      imgRef.current.src = blobURL;
     });
   }, []);
 
@@ -62,6 +57,8 @@ function App() {
   return (
     <div className="App">
       <p>version: {assemblyApi.version()}</p>
+      <p>Our webP image below:</p>
+      <img ref={imgRef} />
     </div>
   );
 }
